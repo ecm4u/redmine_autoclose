@@ -11,7 +11,7 @@ Plugin provides a settings page where one can specify:
 * check interval - amount of days after which an issue is treated as stalled.
 * comment text - comment posted to the issue.
 * user - an user who posts notification. Admin by default.
-* projects - a comma-separated list of project identifiers included with checking. You may use `*` for all projects.
+* projects - a comma-separated list of project identifiers included with checking. You may use * for all projects.
 
 == Launching
 
