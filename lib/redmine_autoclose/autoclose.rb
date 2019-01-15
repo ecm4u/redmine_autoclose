@@ -12,10 +12,20 @@ module RedmineAutoclose
 
     def self.enumerate_issues config
       status_resolved = IssueStatus.find_by_name('Resolved')
-      Project.where('projects.identifier in (?)', config.projects).each do |project|
+      projects = nil
+      if config.projects == ['*']
+        projects = Project.all
+	STDOUT.puts "all"
+      else
+	projects = Project.where('projects.identifier in (?)', config.projects)
+      end
+      projects.each do |project|
         project.issues.where(:status_id => status_resolved).each do |issue|
           when_resolved = when_issue_resolved(issue, status_resolved)
-          yield [issue, when_resolved] if when_resolved && when_resolved < config.interval_time
+	  if not when_resolved
+            when_resolved = issue.updated_on
+	  end
+	  yield [issue, when_resolved] if when_resolved && when_resolved < config.interval_time
         end
       end
     end
